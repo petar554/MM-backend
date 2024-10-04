@@ -1,23 +1,24 @@
 # Memento Mori album
 
-**Memento Mori album** is designed to help users live a more balanced, productive life by focusing on daily reflections, time management, and motivation. The app encourages users to appreciate time, prioritize their obligations, and maintain a healthy life-work balance through reflective practice and progress tracking.
+**Memento Mori album** is designed to help users live a more balanced, productive life by focusing on daily reflections, time management, and motivation. The app encourages users to appreciate time, prioritize their obligations, and maintain a healthy life-work balance through reflective practice and progress tracking. The core philosophy revolves around the concept of Memento Mori (remember that you will die), encouraging users to live intentionally and with purpose.
 
-## Features
+## Core features
 
-- **Daily Planner**: Set and track personal goals, including prompts like "Who did you make happy?" and "What did you learn today?" to promote mindfulness and personal growth.
+- **Daily Planner**: Set and track personal goals, including prompts like "What is your goal for today?", "Who did you make happy?", and "What did you learn today?" to promote mindfulness and personal growth.
 - **Visual Tracking System**: View your progress with a visual tracker similar to GitHub's contribution graph, displaying daily, monthly, and yearly achievements.
 - **Reflection Prompts**: Get prompted with questions to help reflect on your day, supporting a more balanced lifestyle.
-- **Motivational Imagery**: Inspirational images, such as “We are alive. Let’s make the most of it,” to keep users motivated.
+- **Color Switcher**: Users can toggle between a white-green and black-green theme for a customized visual experience.
+- **Motivational Imagery**: Inspirational images, to keep users motivated.
 - **Dedication Section**: A place to acknowledge individuals who inspired the app’s creation.
 - **Monetization & Supporters**: Showcase contributors who have funded the app, with options for users to donate and support its development.
 
 ## Tech Stack
 
-- **Frontend**: Built using **React.js** for the web and **React Native** for mobile, paired with **Tailwind CSS** or **Material-UI** for responsive design.
+- **Frontend**: Built using **React.js** for the web and **React Native** for mobile, paired with **Tailwind CSS** and **Material-UI** for responsive design.
 - **Backend**: Powered by **Node.js + Express.js** for managing user data and APIs.
 - **Database**: Using **SQL Server** for data storage, and **Redis** for caching.
 - **Cloud Services**: Hosted on **AWS** with authentication and notifications provided by **Firebase**.
-- **Monetization**: Integration with **Stripe** and **PayPal API** to handle donations.
+- **Monetization**: Integration with **Stripe** to handle donations.
 
 ## Development Roadmap
 
@@ -45,15 +46,15 @@
 ## Monetization Strategy
 
 - Freemium model: Unlock premium features (advanced analytics, customizations) through subscription.
-- In-app purchases: Offer motivational packs, new themes, or exclusive prompts.
+- In-app purchases: Offer motivational packs, new themes, exclusive prompts.
 
 ## Marketing Strategy
 
-- Build a **Next.js** or **Gatsby** landing page to showcase the app and collect early access emails.
+- Build a **Next.js** (**Gatsby**) landing page to showcase the app and collect early access emails.
 - Promote the app via social media, highlighting its focus on productivity, reflection, and balance.
 
 ## Key Considerations
 
 - **Scalability**: Design APIs for growing user base.
 - **Security**: Ensure encrypted data and secure authentication.
-- **Engagement**: Use streaks, achievements, and sharing features to maintain long-term user interest. 
+- **Engagement**: Use promotions on specific products to maintain long-term customer interest.
