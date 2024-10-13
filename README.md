@@ -9,7 +9,7 @@
 - **Reflection Prompts**: Get prompted with questions to help reflect on your day, supporting a more balanced lifestyle.
 - **Color Switcher**: Users can toggle between a white-green and black-green theme for a customized visual experience.
 - **Motivational Imagery**: Inspirational images, to keep users motivated.
-- **Dedication Section**: A place to acknowledge individuals who inspired the app’s creation.
+- **Dedication Section**: A place to acknowledge individuals who inspired the app's creation.
 - **Monetization & Supporters**: Showcase contributors who have funded the app, with options for users to donate and support its development.
 
 ## Tech Stack
@@ -23,23 +23,28 @@
 ## Development Roadmap
 
 ### Phase 1: Planning & Wireframing
+
 - Design low-fidelity wireframes for key screens and user flows (planner, tracker, prompts).
 - Plan the layout for progress visualization across daily, monthly, and yearly views.
 
 ### Phase 2: Core Feature Development
+
 - Set up user authentication and database schema for goals and reflection tracking.
 - Build the daily planner and progress tracking components in **React.js**.
 
 ### Phase 3: Additional Features
+
 - Add reflection prompts to encourage daily self-evaluation.
 - Create the progress visualization system using **D3.js** or **Chart.js**.
 - Implement notifications using **Firebase Cloud Messaging**.
 
 ### Phase 4: Mobile App Development
+
 - Convert the web app’s features into a **React Native** mobile app.
 - Ensure mobile-optimized UI and push notifications.
 
 ### Phase 5: Testing & Deployment
+
 - Test the app using **Jest**, **Cypress**, and **Appium**.
 - Deploy the web app on **AWS** and publish the mobile app to **Google Play Store** and **Apple App Store**.
 
