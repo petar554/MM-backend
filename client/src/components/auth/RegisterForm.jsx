@@ -1,13 +1,35 @@
 import { useState, useEffect } from "react";
 import { registerUser, loginUser, logoutUser, onAuthChange } from '../../services/authService';
 
+const AuthForm = ({ formState, handleInputChange, handleSubmit, isRegister }) => (
+  <form onSubmit={handleSubmit}>
+    <input
+      type="email"
+      name="email"
+      placeholder="Email"
+      value={formState.email}
+      onChange={handleInputChange}
+      required
+    />
+    <input
+      type="password"
+      name="password"
+      placeholder="Password"
+      value={formState.password}
+      onChange={handleInputChange}
+      required
+    />
+    <button type="submit">{isRegister ? "Register" : "Login"}</button>
+  </form>
+);
+
 const AuthComponent = () => {
   const [authState, setAuthState] = useState(null); // tracking authentication state
   const [formState, setFormState] = useState({
     email: '',
     password: '',
   });
-  const [isRegister, setIsRegister] = useState(true); 
+  const [isRegister, setIsRegister] = useState(true);
 
   useEffect(() => {
     const unsubscribe = onAuthChange((user) => {
@@ -24,7 +46,10 @@ const AuthComponent = () => {
   // handle form inputs
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormState({ ...formState, [name]: value });
+    setFormState((prevFormState) => ({
+      ...prevFormState,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = async (e) => {
@@ -47,40 +72,23 @@ const AuthComponent = () => {
   const handleLogout = async () => {
     try {
       await logoutUser();
-      setAuthState(null); 
+      setAuthState(null);
     } catch (error) {
       console.error("Logout error:", error.message);
     }
   };
-
-  const AuthForm = () => (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="email"
-        name="email"
-        placeholder="Email"
-        value={formState.email}
-        onChange={handleInputChange}
-        required
-      />
-      <input
-        type="password"
-        name="password"
-        placeholder="Password"
-        value={formState.password}
-        onChange={handleInputChange}
-        required
-      />
-      <button type="submit">{isRegister ? "Register" : "Login"}</button>
-    </form>
-  );
 
   return (
     <div>
       {!authState ? (
         <div>
           <h3>{isRegister ? "Register" : "Login"}</h3>
-          <AuthForm />
+          <AuthForm 
+            formState={formState} 
+            handleInputChange={handleInputChange} 
+            handleSubmit={handleSubmit} 
+            isRegister={isRegister} 
+          />
           <button onClick={() => setIsRegister(!isRegister)}>
             Switch to {isRegister ? "Login" : "Register"}
           </button>
