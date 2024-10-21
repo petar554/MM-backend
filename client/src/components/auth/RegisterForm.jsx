@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { registerUser, loginUser, logoutUser, onAuthChange } from '../../services/authService';
+import { registerUser, loginUser, logoutUser, onAuthChange, loginWithGoogle } from '../../services/authService';
 
 const AuthForm = ({ formState, handleInputChange, handleSubmit, isRegister }) => (
   <form onSubmit={handleSubmit}>
@@ -69,6 +69,15 @@ const AuthComponent = () => {
     }
   };
 
+  const handleGoogleLogin = async () => {
+    try {
+      const googleUser = await loginWithGoogle();
+      setAuthState(googleUser);
+    } catch (error) {
+      console.error("Google login error:", error.message);
+    }
+  };
+  
   const handleLogout = async () => {
     try {
       await logoutUser();
@@ -89,6 +98,7 @@ const AuthComponent = () => {
             handleSubmit={handleSubmit} 
             isRegister={isRegister} 
           />
+          <button onClick={handleGoogleLogin}>Login with Google</button>
           <button onClick={() => setIsRegister(!isRegister)}>
             Switch to {isRegister ? "Login" : "Register"}
           </button>
