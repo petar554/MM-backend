@@ -1,47 +1,97 @@
 import { useState, useEffect } from "react";
-import { registerUser, onAuthChange } from '../../services/authService';
+import { registerUser, loginUser, logoutUser, onAuthChange } from '../../services/authService';
 
 const AuthComponent = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [authState, setAuthState] = useState(null); // tracking authentication state
+  const [formState, setFormState] = useState({
+    email: '',
+    password: '',
+  });
+  const [isRegister, setIsRegister] = useState(true); 
 
-  const handleRegister = async () => {
+  useEffect(() => {
+    const unsubscribe = onAuthChange((user) => {
+      if (user) {
+        setAuthState(user);
+      } else {
+        setAuthState(null);
+        setFormState({ email: '', password: '' }); 
+      }
+    });
+    return () => unsubscribe(); // cleanup subscription on unmount
+  }, []);
+
+  // handle form inputs
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormState({ ...formState, [name]: value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // prevent page refresh
+    const { email, password } = formState;
+
     try {
-      const newUser = await registerUser(email, password);
-      console.log('User registered:', user);
-      setUser(newUser);
+      if (isRegister) {
+        const newUser = await registerUser(email, password);
+        setAuthState(newUser);
+      } else {
+        const loggedInUser = await loginUser(email, password);
+        setAuthState(loggedInUser);
+      }
     } catch (error) {
-      console.error("Registration error", error);
+      console.error(`${isRegister ? 'Registration' : 'Login'} error:`, error.message);
     }
   };
 
-  // listen for authentication state changes
-  useEffect(() => {
-    const unsubscribe = onAuthChange((currentUser) => {
-      setUser(currentUser);
-    });
+  const handleLogout = async () => {
+    try {
+      await logoutUser();
+      setAuthState(null); 
+    } catch (error) {
+      console.error("Logout error:", error.message);
+    }
+  };
 
-    return () => unsubscribe();
-  }, []);
-
-return (
-    <form onSubmit={handleRegister}>
+  const AuthForm = () => (
+    <form onSubmit={handleSubmit}>
       <input
         type="email"
+        name="email"
         placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
+        value={formState.email}
+        onChange={handleInputChange}
         required
       />
       <input
         type="password"
+        name="password"
         placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
+        value={formState.password}
+        onChange={handleInputChange}
         required
       />
-      <button type="submit">Register</button>
+      <button type="submit">{isRegister ? "Register" : "Login"}</button>
     </form>
+  );
+
+  return (
+    <div>
+      {!authState ? (
+        <div>
+          <h3>{isRegister ? "Register" : "Login"}</h3>
+          <AuthForm />
+          <button onClick={() => setIsRegister(!isRegister)}>
+            Switch to {isRegister ? "Login" : "Register"}
+          </button>
+        </div>
+      ) : (
+        <div>
+          <h3>Welcome, {authState.email}</h3>
+          <button onClick={handleLogout}>Logout</button>
+        </div>
+      )}
+    </div>
   );
 };
 
