@@ -1,14 +1,15 @@
-// server/server.js
 const express = require('express');
 const bodyParser = require('body-parser');
 const authRoutes = require('./routes/authRoutes');
+const cors = require('cors');
+const { sequelize } = require('./models');
 
 const app = express();
 
+app.use(cors({ origin: 'http://localhost:5173' }));
 app.use(bodyParser.json());
 
-app.use('/api/auth', authRoutes);
+app.use('/', authRoutes);
 
-app.listen(5000, () => {
-    console.log('Server is running on port 5000');
-});
+const PORT = 5000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

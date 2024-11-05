@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
-import { registerUser, loginUser, logoutUser, onAuthChange, loginWithGoogle } from '../../services/authService';
+import { registerUser, loginUser, logoutUser, loginWithGoogle } from '../../services/authService';
+// import * as jwt_decode from 'jwt-decode'; 
+import jwt_decode from 'jwt-decode';
 
 const AuthForm = ({ formState, handleInputChange, handleSubmit, isRegister }) => (
   <form onSubmit={handleSubmit}>
@@ -24,7 +26,7 @@ const AuthForm = ({ formState, handleInputChange, handleSubmit, isRegister }) =>
 );
 
 const AuthComponent = () => {
-  const [authState, setAuthState] = useState(null); // tracking authentication state
+  const [authState, setAuthState] = useState(null);
   const [formState, setFormState] = useState({
     email: '',
     password: '',
@@ -32,18 +34,22 @@ const AuthComponent = () => {
   const [isRegister, setIsRegister] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthChange((user) => {
-      if (user) {
-        setAuthState(user);
-      } else {
-        setAuthState(null);
-        setFormState({ email: '', password: '' }); 
+    const token = localStorage.getItem('jwtToken');
+
+    if (token) {
+      try {
+        const decoded = jwt_decode(token); 
+        setAuthState(decoded);
+      } catch (error) {
+        console.error("Token decoding error:", error);
+        setAuthState(null); 
       }
-    });
-    return () => unsubscribe(); // cleanup subscription on unmount
+    } else {
+      setAuthState(null);
+      setFormState({ email: '', password: '' });
+    }
   }, []);
 
-  // handle form inputs
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormState((prevFormState) => ({
@@ -53,7 +59,7 @@ const AuthComponent = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // prevent page refresh
+    e.preventDefault();
     const { email, password } = formState;
 
     try {
@@ -77,7 +83,7 @@ const AuthComponent = () => {
       console.error("Google login error:", error.message);
     }
   };
-  
+
   const handleLogout = async () => {
     try {
       await logoutUser();
@@ -92,11 +98,11 @@ const AuthComponent = () => {
       {!authState ? (
         <div>
           <h3>{isRegister ? "Register" : "Login"}</h3>
-          <AuthForm 
-            formState={formState} 
-            handleInputChange={handleInputChange} 
-            handleSubmit={handleSubmit} 
-            isRegister={isRegister} 
+          <AuthForm
+            formState={formState}
+            handleInputChange={handleInputChange}
+            handleSubmit={handleSubmit}
+            isRegister={isRegister}
           />
           <button onClick={handleGoogleLogin}>Login with Google</button>
           <button onClick={() => setIsRegister(!isRegister)}>

@@ -1,44 +1,33 @@
-import { auth } from '../firebase'; 
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-
-const googleProvider = new GoogleAuthProvider();
+import axios from 'axios';
+const API_URL = import.meta.env.VITE_API_URL;
 
 export const registerUser = async (email, password) => {
-  try {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    return userCredential.user; 
-  } catch (error) {
-    throw new Error(error.message);
-  }
+    const response = await axios.post(`${API_URL}/register`, { email, password });
+
+    const { user, token } = response.data;
+
+    localStorage.setItem('jwtToken', token);
+    return user;
 };
 
 export const loginUser = async (email, password) => {
-  try {
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    return userCredential.user;
-  } catch (error) {
-    throw new Error(error.message);
-  }
+  const response = await axios.post(`${API_URL}/login`, { email, password });
+  const { user, token } = response.data;
+
+  localStorage.setItem('jwtToken', token);
+
+  return user;
 };
 
-// google sign-In
-export const loginWithGoogle = async () => {
-  try {
-    const userCredential = await signInWithPopup(auth, googleProvider);
-    return userCredential.user; 
-  } catch (error) {
-    throw new Error(error.message);
-  }
+export const loginWithGoogle = async (idToken) => {
+  const response = await axios.post(`${API_URL}/login/google`, { idToken });
+  const { user, token } = response.data;
+
+  localStorage.setItem('jwtToken', token);
+
+  return user;
 };
 
-export const logoutUser = async () => {
-  try {
-    await signOut(auth);
-  } catch (error) {
-    throw new Error(error.message);
-  }
-};
-
-export const onAuthChange = (callback) => {
-    return onAuthStateChanged(auth, callback); 
+export const logoutUser = () => {
+    localStorage.removeItem('jwtToken');
 };
