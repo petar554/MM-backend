@@ -29,25 +29,33 @@ const registerUser = async (email, password) => {
 }
 
 const loginUser = async (email, password) => {
-    const user = await User.findOne({ where: { email } });
-    if (!user) throw new Error('User not found');
+    try {
+        const user = await User.findOne({ where: { email } });
+        if (!user) throw new Error('User not found');
 
-    const isMatch = await bcrypt.compare(password, user.passwordHash);
-    if (!isMatch) throw new Error('Invalid credentials');
+        const isMatch = await bcrypt.compare(password, user.passwordHash);
+        if (!isMatch) throw new Error('Invalid credentials');
 
-    return { user, token: generateJWT(user) };
+        return { user, token: generateJWT(user) };
+    } catch (error) {
+        throw error;
+    }
 };
 
 const loginWithGoogle = async (idToken) => {
-    const decodedToken = await firebaseAdmin.auth().verifyIdToken(idToken);
-    const email = decodedToken.email;
-
-    let user = await User.findOne({ where: { email } });
-    if (!user) {
-        user = await User.create({ email, passwordHash: null }); 
+    try {
+        const decodedToken = await firebaseAdmin.auth().verifyIdToken(idToken);
+        const email = decodedToken.email;
+    
+        let user = await User.findOne({ where: { email } });
+        if (!user) {
+            user = await User.create({ email, passwordHash: null }); 
+        }
+    
+        return { user, token: generateJWT(user) };
+    } catch (error) {
+        throw error;
     }
-
-    return { user, token: generateJWT(user) };
 };
 
 const verifyJWT = (req, res, next) => {

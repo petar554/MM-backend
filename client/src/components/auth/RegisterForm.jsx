@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { registerUser, loginUser, logoutUser, loginWithGoogle } from '../../services/authService';
-// import * as jwt_decode from 'jwt-decode'; 
-import jwt_decode from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 
 const AuthForm = ({ formState, handleInputChange, handleSubmit, isRegister }) => (
   <form onSubmit={handleSubmit}>
@@ -38,7 +37,7 @@ const AuthComponent = () => {
 
     if (token) {
       try {
-        const decoded = jwt_decode(token); 
+        const decoded = jwtDecode(token);
         setAuthState(decoded);
       } catch (error) {
         console.error("Token decoding error:", error);

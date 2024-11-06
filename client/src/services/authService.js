@@ -17,7 +17,7 @@ export const loginUser = async (email, password) => {
   localStorage.setItem('jwtToken', token);
 
   return user;
-};
+};  
 
 export const loginWithGoogle = async (idToken) => {
   const response = await axios.post(`${API_URL}/login/google`, { idToken });
