@@ -1,5 +1,5 @@
 const express = require('express');
-const { registerUser, loginUser, verifyJWT } = require('../services/authService');
+const { registerUser, loginUser, loginWithGoogle, verifyJWT } = require('../services/authService');
 const router = express.Router();
 
 router.post('/register', async (req, res) => {

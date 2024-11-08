@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { registerUser, loginUser, logoutUser, loginWithGoogle } from '../../services/authService';
+import { auth } from '../../firebase';
 import { jwtDecode } from 'jwt-decode';
 
 const AuthForm = ({ formState, handleInputChange, handleSubmit, isRegister }) => (
@@ -73,10 +75,18 @@ const AuthComponent = () => {
       console.error(`${isRegister ? 'Registration' : 'Login'} error:`, error.message);
     }
   };
-
+  
   const handleGoogleLogin = async () => {
     try {
-      const googleUser = await loginWithGoogle();
+      const provider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, provider);
+      
+      // get ID token from the user credential
+      const idToken = await result.user.getIdToken();
+      console.log("Google idToken:", idToken);
+  
+      // pass idToken to backend
+      const googleUser = await loginWithGoogle(idToken);
       setAuthState(googleUser);
     } catch (error) {
       console.error("Google login error:", error.message);
