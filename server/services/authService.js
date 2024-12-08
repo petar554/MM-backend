@@ -1,11 +1,11 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { User } = require('../models'); 
 const firebaseAdmin = require('firebase-admin');
 const config = require('../config/config');
-const JWT_SECRET = process.env.JWT_SECRET;
 
-// initialize Firebase Admin SDK
+const JWT_SECRET = process.env.JWT_SECRET;
+const { User } = require('../models'); 
+
 firebaseAdmin.initializeApp({
     credential: firebaseAdmin.credential.cert(config.firebaseAdmin),
 });
@@ -14,26 +14,51 @@ const generateJWT = (user) => {
     return jwt.sign({id: user, email: user.email}, JWT_SECRET, { expiresIn : '1h' });
 }
 
-const registerUser = async (email, password) => {
+const registerUser = async (email, password, first_name, last_name, username, date_of_birth, city, country) => {
     try {
-        const existingUser = await User.findOne({ where: { email }});
-        if (existingUser) throw new Error('User already exist!')
+        const existingUser = await User.findOne({ where: { email } });
+        if (existingUser) throw new Error('User already exists!');
 
         const hashedPassword = await bcrypt.hash(password, 10);
-        const newUser = await User.create({ email, passwordHash: hashedPassword });
 
-        return { user: newUser, token: generateJWT(newUser)};
+        const newUser = await User.create({
+            first_name,
+            last_name,
+            username,
+            email,
+            date_of_birth,
+            password_hash: hashedPassword,
+            city,
+            country
+        });
+
+        const token = generateJWT(newUser);
+
+        const userResponse = {
+            user_id: newUser.user_id,
+            first_name: newUser.first_name,
+            last_name: newUser.last_name,
+            email: newUser.email,
+            username: newUser.username,
+            date_of_birth: newUser.date_of_birth,
+            city: newUser.city,
+            country: newUser.country,
+            createdAt: newUser.createdAt,
+            updatedAt: newUser.updatedAt
+        };
+
+        return { user: userResponse, token };
     } catch (error) {
-        throw error;
+        throw error;  
     }
-}
+};
 
 const loginUser = async (email, password) => {
     try {
         const user = await User.findOne({ where: { email } });
         if (!user) throw new Error('User not found');
 
-        const isMatch = await bcrypt.compare(password, user.passwordHash);
+        const isMatch = await bcrypt.compare(password, user.dataValues.password_hash);
         if (!isMatch) throw new Error('Invalid credentials');
 
         return { user, token: generateJWT(user) };

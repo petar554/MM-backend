@@ -2,11 +2,6 @@
 const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Intention extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
       // An intention belongs to a user
       Intention.belongsTo(models.User, {
@@ -31,23 +26,15 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       references: {
         model: 'Users',
-        key: 'id',
+        key: 'user_id',
       },
       allowNull: false,
     },
-    intentions_date: {
-      type: DataTypes.DATE,
-      allowNull: false,
+    total_rating: {
+      type: DataTypes.NUMERIC,
+      allowNull: true,
     },
-    goal: DataTypes.TEXT,
-    happiness: DataTypes.TEXT,
-    knowledge: DataTypes.TEXT,
-    summary: DataTypes.TEXT,
-    is_monthly_summary: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false,
-    },
-    created_at: {
+    createdAt: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,
     },
