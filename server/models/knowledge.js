@@ -2,22 +2,18 @@
 const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-  class Media extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
+  class Knowledge extends Model {
     static associate(models) {
-      // Media belongs to an intention
-      Media.belongsTo(models.Intention, {
+      // Knowledge belongs to an intention
+      Knowledge.belongsTo(models.Intention, {
         foreignKey: 'intention_id',
         onDelete: 'CASCADE',
       });
     }
   }
-  Media.init({
-    media_id: {
+
+  Knowledge.init({
+    knowledge_id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
@@ -30,28 +26,30 @@ module.exports = (sequelize, DataTypes) => {
       },
       allowNull: false,
     },
-    media_url: {
+    knowledge: {
       type: DataTypes.TEXT,
       allowNull: false,
     },
-    media_type: {
-      type: DataTypes.STRING(50),
-      allowNull: true,
-    },
-    is_highlighted: {
-      type: DataTypes.boolean,
-      allowNull: true,
-      defaultValue: false,
+    rating: {
+      type: DataTypes.DECIMAL(5, 2),
+      allowNull: false,
     },
     createdAt: {
       type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
       defaultValue: DataTypes.NOW,
     },
   }, {
     sequelize,
-    modelName: 'Media',
-    tableName: 'Media',
-    timestamps: true
+    modelName: 'Knowledge',
+    tableName: 'Knowledge',
+    timestamps: true,
   });
-  return Media;
+
+  return Knowledge;
 };

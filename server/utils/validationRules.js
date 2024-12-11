@@ -58,7 +58,7 @@ const intentionValidationRules = () => [
         .isNumeric().withMessage('Total rating must be a number'),
 ];
 
-// validation rules for Goals
+// validation rules for Goal
 const goalValidationRules = () => [
     body('goal')
         .notEmpty().withMessage('Goal is required')
@@ -88,7 +88,7 @@ const knowledgeValidationRules = () => [
         .isNumeric().withMessage('Rating must be a number.'),
 ];
 
-// validation rules for Summaries
+// validation rules for Summary
 const summaryValidationRules = () => [
     body('summary')
         .notEmpty().withMessage('Summary is required')
@@ -113,6 +113,9 @@ const mediaValidationRules = () => [
     body('media_type')
         .optional()
         .isString().withMessage('media_type must be a string'),
+    body('is_highlighted')
+        .optional()
+        .isBoolean().withMessage('is_highlighted must be a boolean'),
 ];
 
 const idValidationRule = () => [

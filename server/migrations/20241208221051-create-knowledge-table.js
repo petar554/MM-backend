@@ -10,7 +10,7 @@ module.exports = {
       intention_id: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'Intentions',
+          model: 'Intention',
           key: 'intention_id',
         },
         allowNull: false,
