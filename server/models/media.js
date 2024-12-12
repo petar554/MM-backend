@@ -39,7 +39,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     is_highlighted: {
-      type: DataTypes.boolean,
+      type: DataTypes.BOOLEAN,
       allowNull: true,
       defaultValue: false,
     },
