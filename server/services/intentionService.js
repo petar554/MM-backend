@@ -11,7 +11,7 @@ const createIntention = async (userId, data) => {
 const getIntentions = async (userId) => {
     return await Intention.findAll({
         where: { user_id: userId },
-        order: [['intentions_date', 'DESC']],
+        order: [['createdAt', 'DESC']],
     });
 };
 

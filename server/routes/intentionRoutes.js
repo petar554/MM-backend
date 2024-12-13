@@ -21,7 +21,7 @@ router.post(
 
 router.get('/', verifyJWT, async (req, res) => {
     try {
-        const intentions = await getIntentions(req.user.id);
+        const intentions = await getIntentions(req.user.id.user_id);
         res.status(200).json({ intentions });
     } catch (error) {
         res.status(400).json({ error: error.message });
@@ -35,7 +35,7 @@ router.put(
     handleValidationErrors,
     async (req, res) => {
         try {
-            const intention = await updateIntention(req.params.id, req.user.id, req.body);
+            const intention = await updateIntention(req.params.id, req.user.id.user_id, req.body);
             res.status(200).json({ intention });
         } catch (error) {
             res.status(400).json({ error: error.message });
@@ -50,7 +50,7 @@ router.delete(
     handleValidationErrors,
     async (req, res) => {
         try {
-            await deleteIntention(req.params.id, req.user.id);
+            await deleteIntention(req.params.id, req.user.id.user_id);
             res.status(204).send();
         } catch (error) {
             res.status(400).json({ error: error.message });
