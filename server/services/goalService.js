@@ -1,7 +1,8 @@
 const { Goal } = require('../models');
 
-const createGoal = async (data) => {
-  const { intentionId, goal, rating } = data;
+const createGoal = async (params, body) => {
+  const { intentionId } = params;
+  const { goal, rating } = body;
 
   return await Goal.create({
     intention_id: intentionId,
@@ -10,8 +11,8 @@ const createGoal = async (data) => {
   });
 };
 
-const getGoalsForIntention = async (data) => {
-  const { intentionId } = data;
+const getGoalsForIntention = async (params, body) => {
+  const { intentionId } = params;
 
   return await Goal.findAll({
     where: { intention_id: intentionId },
@@ -19,8 +20,9 @@ const getGoalsForIntention = async (data) => {
   });
 };
 
-const updateGoal = async (data) => {
-  const { goalId, goal, rating } = data;
+const updateGoal = async (params, body) => {
+  const { goalId } = params;
+  const { goal, rating } = body;
 
   const goalRecord = await Goal.findByPk(goalId);
   if (!goalRecord) throw new Error('Goal not found');
@@ -32,8 +34,8 @@ const updateGoal = async (data) => {
   return goalRecord;
 };
 
-const deleteGoal = async (data) => {
-  const { goalId } = data;
+const deleteGoal = async (body) => {
+  const { goalId } = body;
 
   const goalRecord = await Goal.findByPk(goalId);
   if (!goalRecord) throw new Error('Goal not found');

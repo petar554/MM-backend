@@ -1,17 +1,18 @@
 const { Happiness } = require("../models");
 
-const createHappiness = async (data) => {
-  const { intention_id, happiness, rating } = data;
+const createHappiness = async (params, body) => {
+  const { intentionId } = params;
+  const { happiness, rating } = body;
 
   return await Happiness.create({
-    intention_id,
-    happiness,
-    rating,
+    intention_id: intentionId,
+    happiness: happiness,
+    rating: rating,
   });
 };
 
-const getHappinessByIntention = async (data) => {
-  const { intentionId } = data;
+const getHappinessByIntention = async (params, body) => {
+  const { intentionId } = params;
 
   return await Happiness.findAll({
     where: { intention_id: intentionId },
@@ -19,8 +20,9 @@ const getHappinessByIntention = async (data) => {
   });
 };
 
-const updateHappiness = async (data) => {
-  const { happinessId, happiness, rating } = data;
+const updateHappiness = async (params, body) => {
+  const { happinessId } = params;
+  const { happiness, rating } = body;
 
   const happinessRecord = await Happiness.findByPk(happinessId);
   if (!happinessRecord) throw new Error("Happiness record not found");
@@ -32,8 +34,8 @@ const updateHappiness = async (data) => {
   return happinessRecord;
 };
 
-const deleteHappiness = async (data) => {
-  const { happinessId } = data;
+const deleteHappiness = async (body) => {
+  const { happinessId } = body;
 
   const happinessRecord = await Happiness.findByPk(happinessId);
   if (!happinessRecord) throw new Error("Happiness record not found");

@@ -14,13 +14,13 @@ const {
 } = require("../services/summaryService");
 
 router.post(
-  "/create",
+  "/create/:intentionId",
   verifyJWT,
   summaryValidationRules(),
   handleValidationErrors,
   async (req, res) => {
     try {
-      const summary = await createSummary(req.body);
+      const summary = await createSummary(req.params, req.body);
       res.status(201).json({ summary });
     } catch (error) {
       res.status(400).json({ error: error.message });
@@ -44,7 +44,7 @@ router.put(
   handleValidationErrors,
   async (req, res) => {
     try {
-      const summary = await updateSummary(req.body);
+      const summary = await updateSummary(req.params, req.body);
       res.status(200).json({ summary });
     } catch (error) {
       res.status(400).json({ error: error.message });

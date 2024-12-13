@@ -14,13 +14,13 @@ const {
 } = require("../services/knowledgeService");
 
 router.post(
-  "/create",
+  "/create/:intentionId",
   verifyJWT,
   knowledgeValidationRules(),
   handleValidationErrors,
   async (req, res) => {
     try {
-      const knowledge = await createKnowledge(req.body);
+      const knowledge = await createKnowledge(req.params, req.body);
       res.status(201).json({ knowledge });
     } catch (error) {
       res.status(400).json({ error: error.message });
@@ -44,7 +44,7 @@ router.put(
   handleValidationErrors,
   async (req, res) => {
     try {
-      const knowledge = await updateKnowledge(req.body);
+      const knowledge = await updateKnowledge(req.params, req.body);
       res.status(200).json({ knowledge });
     } catch (error) {
       res.status(400).json({ error: error.message });

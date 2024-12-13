@@ -1,19 +1,19 @@
 const { Summary } = require("../models");
 
-const createSummary = async (data) => {
-  const { intention_id, summary, rating, is_monthly_summary, highlight } = data;
+const createSummary = async (params, body) => {
+  const { intentionId } = params;
+  const { summary, is_monthly_summary, highlight } = body;
 
   return await Summary.create({
-    intention_id,
-    summary,
-    rating,
-    is_monthly_summary,
-    highlight,
+    intention_id: intentionId,
+    summary: summary,
+    is_monthly_summary: is_monthly_summary,
+    highlight:  highlight,
   });
 };
 
-const getSummariesByIntention = async (data) => {
-  const { intentionId } = data;
+const getSummariesByIntention = async (params, body) => {
+  const { intentionId } = params;
 
   return await Summary.findAll({
     where: { intention_id: intentionId },
@@ -21,14 +21,14 @@ const getSummariesByIntention = async (data) => {
   });
 };
 
-const updateSummary = async (data) => {
-  const { summaryId, summary, rating, is_monthly_summary, highlight } = data;
+const updateSummary = async (params, body) => {
+  const { summaryId } = params;
+  const { summary, is_monthly_summary, highlight } = body;
 
   const summaryRecord = await Summary.findByPk(summaryId);
   if (!summaryRecord) throw new Error("Summary record not found");
 
   summaryRecord.summary = summary;
-  summaryRecord.rating = rating;
   summaryRecord.is_monthly_summary = is_monthly_summary;
   summaryRecord.highlight = highlight;
 
@@ -36,8 +36,8 @@ const updateSummary = async (data) => {
   return summaryRecord;
 };
 
-const deleteSummary = async (data) => {
-  const { summaryId } = data;
+const deleteSummary = async (body) => {
+  const { summaryId } = body;
 
   const summaryRecord = await Summary.findByPk(summaryId);
   if (!summaryRecord) throw new Error("Summary record not found");

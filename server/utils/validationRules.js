@@ -99,9 +99,6 @@ const summaryValidationRules = () => [
     body('highlight')
         .optional()
         .isString().withMessage('Highlight must be a string.'),
-    body('rating')
-        .notEmpty().withMessage('Rating is required')
-        .isNumeric().withMessage('Rating must be a number.'),
 ];
 
 
@@ -121,7 +118,7 @@ const mediaValidationRules = () => [
 const idValidationRule = () => [
     param('id')
     .notEmpty().withMessage('Intention ID is required')
-    .isUUID().withMessage('Intention ID must be a valid UUID'),
+    .isInt().withMessage('Intention ID must be a integer'),
 ];
 
 module.exports = {

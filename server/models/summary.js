@@ -30,10 +30,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.TEXT,
       allowNull: false,
     },
-    rating: {
-      type: DataTypes.DECIMAL(5, 2),
-      allowNull: false,
-    },
     highlight: {
       type: DataTypes.TEXT,
       allowNull: true,
